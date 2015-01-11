@@ -86,6 +86,7 @@ sub main_vars {
 		author => $self->{author},
 		author_url => $self->{author_url} || '',
 		date => $self->{date},
+		description => $self->{description} || '',
 	};
 }
 
