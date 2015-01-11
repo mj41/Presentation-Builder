@@ -38,6 +38,11 @@ sub get_processed_templ_content {
 	return $content;
 }
 
+sub out_fpath {
+	my $self = shift;
+	return $self->{out_fpath};
+}
+
 sub open_out_file {
 	my ( $self ) = @_;
 	open( $self->{out_fh}, '>:utf8', $self->{out_fpath} )
