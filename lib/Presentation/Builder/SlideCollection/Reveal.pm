@@ -10,15 +10,16 @@ use File::Spec;
 use HTML::Entities;
 use HTML::FromANSI ();
 use Text::Markdown;
+use File::ShareDir ();
 
 sub init {
 	my ( $self ) = @_;
 	$self->SUPER::init();
 	$self->mandatory_param( $_ ) foreach qw/
-		templ_dir
 		revealjs_dir
 		out_fpath
 	/;
+	$self->{templ_dir} //= File::ShareDir::module_dir( ref($self) );
 }
 
 sub replace_var {
