@@ -12,6 +12,7 @@ sub new {
 	$self->{name2pos} = {};
 	$self->{ctx} = {};
 	$self->{sleep_mult} = $args{sleep_mult} // 1;
+	$self->{vl} //= 3;
 	bless $self, $class;
 
 	$self->init();
@@ -72,6 +73,7 @@ sub all_slides_end {
 
 sub log_slide_begin {
 	my ( $self, $meta_data, $data_source_type ) = @_;
+	return 1 unless $self->{vl} >= 3;
 	print $self->char_line( $meta_data->{slide_name}, '=' );
 }
 
@@ -83,6 +85,7 @@ sub slide_begin {
 
 sub log_slide_end {
 	my ( $self, $meta_data, $data_source_type ) = @_;
+	return 1 unless $self->{vl} >= 3;
 	print "\n\n";
 }
 
@@ -94,6 +97,7 @@ sub slide_end {
 
 sub log_add_slide_raw {
 	my ( $self, $raw_out ) = @_;
+	return 1 unless $self->{vl} >= 3;
 	print $raw_out;
 }
 
@@ -116,6 +120,7 @@ sub fragment_added {
 
 sub log_add_slide_text {
 	my ( $self, $meta_data, $data_source_type, $text ) = @_;
+	return 1 unless $self->{vl} >= 3;
 	print $text;
 }
 
@@ -128,6 +133,9 @@ sub add_slide_text {
 
 sub log_add_slide_cmd {
 	my ( $self, $ci ) = @_;
+
+	return 1 unless $self->{vl} >= 3;
+
 	my $d_prefix = '|d| ';
 
 	if ( $ci->{no} || $ci->{no_cmd} ) {
