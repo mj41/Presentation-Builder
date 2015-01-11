@@ -1,14 +1,14 @@
 Presentation::Builder
 ====================
 
-Perl 5 module to help you generate Reveal.js slides programmatically (all commands are run and output is captured).
+Perl 5 module to help you generate [reveal.js](http://lab.hakim.se/reveal-js/) presentation programmatically (all commands are run and output is captured).
 
 Example
 -------
 
-See https://github.com/mj41/git-course-mj41 for example usage.
+See [mj41/prbuilder-docker](https://github.com/mj41/prbuilder-docker) and [mj41/git-course-mj41](https://github.com/mj41/git-course-mj41) for more info.
 
 Status
 ------
 
-POC (proof of concept) - no nay documentations, bad test coverage - but working :-).
+POC (proof of concept) - no documentations, bad test coverage - but working :-).
