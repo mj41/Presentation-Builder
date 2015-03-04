@@ -30,7 +30,7 @@ sub init {
 }
 
 sub add_slide {
-	my ( $self, $name, $data_src1, $data_src2 ) = @_;
+	my ( $self, $name, $data_src1, $data_src2, %more_args ) = @_;
 
 	$name = sprintf( 'Slide %02d', $#{$self->{data_src}} + 1) unless $name;
 	die "Slide name '$name' already added as slide number $self->{name2pos}{$name}.\n"
@@ -47,7 +47,7 @@ sub add_slide {
 		my $data_source_type = $data_src1;
 		my $supported = $self->supported_data_source_types();
 		die "Data source type '$data_source_type' is not supported." unless $supported->{$data_source_type};
-		push @{$self->{data_src}}, [ $data_source_type, $data_src2 ];
+		push @{$self->{data_src}}, [ $data_source_type, $data_src2, %more_args ];
 	}
 
 	push @{$self->{names}}, $name;
@@ -226,7 +226,7 @@ sub run_all {
 		$self->{ctx}{slide_pos} = $slide_pos;
 		$self->fragment_reset();
 
-		my ( $data_source_type, $data_source ) = @{ $self->{data_src}[$slide_pos] };
+		my ( $data_source_type, $data_source, %more_args ) = @{ $self->{data_src}[$slide_pos] };
 		my $meta_data = $self->get_slide_meta();
 		$self->slide_begin( $meta_data, $data_source_type );
 		$self->process_slide_part_simple( $name, $meta_data, $data_source_type, $data_source, $env );
