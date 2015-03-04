@@ -117,6 +117,12 @@ sub slide_begin {
 	$self->process_templ( 'slide_begin.templ', $self->slide_vars( @_ ) );
 }
 
+sub slide_header {
+	my $self = shift;
+	$self->log_slide_header( @_ );
+	$self->process_templ( 'slide_header.templ', $self->slide_vars( @_ ) );
+}
+
 sub slide_end {
 	my $self = shift;
 	$self->log_slide_end( @_ );

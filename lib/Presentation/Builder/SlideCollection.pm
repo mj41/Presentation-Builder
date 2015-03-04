@@ -77,6 +77,11 @@ sub log_slide_begin {
 	print $self->char_line( $meta_data->{slide_name}, '=' );
 }
 
+sub log_slide_header {
+	my ( $self, $meta_data, $data_source_type ) = @_;
+	return 1 unless $self->{vl} >= 4;
+}
+
 sub slide_begin {
 	my ( $self, $meta_data, $data_source_type ) = @_;
 	$self->log_slide_begin( $meta_data, $data_source_type );
