@@ -38,7 +38,7 @@ sub add_slide {
 
 	# Subroutine to run throug RunEnv/RunCmd.
 	if ( ref $data_src1 eq 'CODE' ) {
-		die "Method add_slide parameter error: second parameter is uselles if cmd_sub provided."
+		die "Method add_slide parameter error: second parameter is useless if cmd_sub provided."
 			if defined $data_src2;
 		push @{$self->{data_src}}, [ 'cmd_sub', $data_src1 ];
 
