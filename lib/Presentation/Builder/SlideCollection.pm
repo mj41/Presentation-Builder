@@ -234,6 +234,8 @@ sub run_all {
 		my ( $data_source_type, $data_source, %more_args ) = @{ $self->{data_src}[$slide_pos] };
 		my $meta_data = $self->get_slide_meta();
 		$self->slide_begin( $meta_data, $data_source_type );
+		$self->slide_header( $meta_data, $data_source_type )
+			if (not exists $more_args{header}) || $more_args{header};
 		$self->process_slide_part_simple( $name, $meta_data, $data_source_type, $data_source, $env );
 		$self->slide_end( $meta_data, $data_source_type );
 		$self->{ctx}{prev_name} = $name;
