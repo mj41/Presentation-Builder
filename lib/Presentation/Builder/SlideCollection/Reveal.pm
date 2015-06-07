@@ -90,12 +90,32 @@ sub main_vars {
 	};
 }
 
+sub first_slides_vars {
+	my ( $self, $vars ) = @_;
+
+	my $first_slide_suffix_html = $self->{first_slide_suffix_html};
+	unless ( $first_slide_suffix_html ) {
+		$first_slide_suffix_html = $vars->{author_url}
+			? qq|<small>by <a href="$vars->{author_url}">$vars->{author}</a></small>|
+			:  qq|<small>by $vars->{author}</small>|
+	}
+
+	return {
+		%$vars,
+		first_slide_suffix_html => $first_slide_suffix_html,
+	};
+}
+
 sub all_slides_begin {
 	my ( $self ) = @_;
 	$self->open_out_file();
 	my $vars = $self->main_vars();
 	$self->process_templ( 'all_slides_begin.templ', $vars );
-	$self->process_templ( 'first_slide.templ', $vars );
+
+	$self->process_templ(
+		'first_slide.templ',
+		$self->first_slides_vars( $vars )
+	);
 }
 
 sub all_slides_end {
