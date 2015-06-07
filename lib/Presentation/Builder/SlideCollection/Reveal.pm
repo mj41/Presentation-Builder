@@ -120,7 +120,14 @@ sub all_slides_begin {
 
 sub all_slides_end {
 	my ( $self ) = @_;
-	$self->process_templ( 'all_slides_end.templ', $self->main_vars() );
+	$self->process_templ(
+		'all_slides_end.templ',
+		{
+			%{ $self->main_vars() },
+			init_width => $self->{init_width} // 800,
+			init_height => $self->{init_height} // 600,
+		}
+	);
 	$self->close_out_file();
 }
 
