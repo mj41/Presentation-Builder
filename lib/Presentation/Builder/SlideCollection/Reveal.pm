@@ -225,4 +225,22 @@ sub add_slide_cmd {
 	return 1;
 }
 
+
+sub add_slide_notes {
+	my $self = shift;
+	$self->log_add_slide_notes( @_ );
+	my ( $meta_data, $data_source_type, $text ) = @_;
+
+	$self->out( "<aside class=notes>\n" );
+	if ( $data_source_type eq 'markdown' ) {
+		my $m = Text::Markdown->new;
+		my $html = $m->markdown($text);
+		$self->out( $html );
+	} else {
+		$self->out( $text );
+	}
+	$self->out( "</aside>\n" );
+	return $text;
+}
+
 1;

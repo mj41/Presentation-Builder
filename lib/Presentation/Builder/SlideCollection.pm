@@ -136,6 +136,18 @@ sub add_slide_text {
 	return $text;
 }
 
+sub log_add_slide_notes {
+	my ( $self, $meta_data, $data_source_type, $text ) = @_;
+	return 1 unless $self->{vl} >= 4;
+	print "NOTES:\n$text\n";
+}
+
+sub add_slide_notes {
+	my ( $self, $meta_data, $data_source_type, $text ) = @_;
+	$self->log_add_slide_notes( $meta_data, $data_source_type, $text );
+	return $text;
+}
+
 sub log_add_slide_cmd {
 	my ( $self, $ci ) = @_;
 
@@ -187,17 +199,26 @@ sub get_slide_meta {
 }
 
 sub process_slide_part_simple {
-	my ( $self, $name, $meta_data, $data_source_type, $data_source, $env ) = @_;
+	my ( $self, $name, $meta_data, $data_source_type, $data_source, $env, $more_args ) = @_;
 
 	if ( $data_source_type eq 'cmd_sub' ) {
 		$self->{all_results}{$name} = $env->run_sub( $data_source, $meta_data );
 	} else {
 		$self->{all_results}{$name} = $self->add_slide_text( $meta_data, $data_source_type, $data_source );
 	}
+
+	if ( exists $more_args->{notes} ) {
+		my $data_source_notes = $more_args->{notes};
+		if ( not ref $data_source_notes ) {
+			$self->add_slide_notes( $meta_data, 'markdown', $data_source_notes );
+		} else {
+			die "Only string (interpreted as Markdown) is supported for slide notes.";
+		}
+	}
 }
 
 sub process_slide_part {
-	my ( $self, $data_source_type, $data_source ) = @_;
+	my ( $self, $data_source_type, $data_source, $more_args ) = @_;
 	my $ctx = $self->{ctx};
 	return $self->process_slide_part_simple(
 		$ctx->{name},            # $name
@@ -205,6 +226,7 @@ sub process_slide_part {
 		$data_source_type,       # $data_source_type
 		$data_source,            # $data_source
 		$ctx->{env},             # $env
+		$more_args,              # $more_args
 	);
 }
 
@@ -236,7 +258,7 @@ sub run_all {
 		$self->slide_begin( $meta_data, $data_source_type );
 		$self->slide_header( $meta_data, $data_source_type )
 			if (not exists $more_args{header}) || $more_args{header};
-		$self->process_slide_part_simple( $name, $meta_data, $data_source_type, $data_source, $env );
+		$self->process_slide_part_simple( $name, $meta_data, $data_source_type, $data_source, $env, \%more_args );
 		$self->slide_end( $meta_data, $data_source_type );
 		$self->{ctx}{prev_name} = $name;
 	}
